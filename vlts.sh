@@ -8,12 +8,12 @@
 # - in order to perform the login, it requires token to be saved in the file
 # - later we might add other backends, such as gnome keyring
 
-VLTS_HOME=~/.vlts.d/
+VLTS_HOME=~/.config/vlts.d/
 VLTS_LOGIN_METHOD="github"
 
 # Load configuration file if it exists
-if [ -e ~/.vltsrc ]; then
-    . ~/.vltsrc
+if [ -e ~/.config/vltsrc ]; then
+    . ~/.config/vltsrc
 fi
 
 if [ ! -d "$VLTS_HOME" ]; then
@@ -30,13 +30,13 @@ function vlts_login(){
     VLTS_SOURCE_CONFIG="$VLTS_HOME$VAULT_ADDRESS.conf"
     if [ -e "$VLTS_SOURCE_CONFIG" ]; then
 	. $VLTS_SOURCE_CONFIG
-	if [ ! -z $VLTS_GITHUB_TOKEN ]; then
+	if [ ! -z $GITHUB_TOKEN ]; then
 	    # If not provided, will it prompt for the token? What about method?
 	    # Flag provided but not defined - token
 	    vault login -method=$VLTS_LOGIN_METHOD token=$GITHUB_TOKEN
 	# We could support multiple auth menthods here (app_id/app_role/azure/whatever)
 	else
-	    echo "VLTS_GITHUB_TOKEN not defined in $VLTS_SOURCE_CONFIG."
+	    echo "GITHUB_TOKEN not defined in $VLTS_SOURCE_CONFIG."
 	fi
     else
 	echo "Configuration file $VLTS_SOURCE_CONFIG for the $VAULT_ADDR does not exist."
